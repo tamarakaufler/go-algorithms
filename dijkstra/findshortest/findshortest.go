@@ -3,52 +3,48 @@ package findshortest
 import (
 	"fmt"
 	"math"
+	"sort"
 )
 
 type NodeMap map[string]int
 type Graph map[string]NodeMap
 
 type weight map[string]int
-type parent map[string]string
 
 // FindShortest implements Dijkstra's algorithm
-// It uses four data structures, all maps:
-//		Graph ... holds the description of the (weighted) graph, ie node and edge
+// It uses three data structures, all maps:
+//		Graph ....... holds the description of the (weighted) graph, ie node and edge
 //		information
+//		cost ........ stores gradually updated path length for nodes
+//		processed ... stores already processed nodes
 func (g Graph) FindShortest() {
+
+	// cost holds distance to a node from the start.
+	// cost gets gradually updated with newly found shorted
+	// paths of nodes.
 	cost := make(weight)
-	par := make(parent)
 
 	// setup ----------------------------------
 	for k, v := range g {
 		//fmt.Printf("%s:\n", k)
 
-		if k == "Fin" {
-			par[k] = ""
-		}
-
 		for nn, nw := range v {
 			if k == "Start" {
-				par[nn] = k
 				cost[nn] = nw
 			} else {
 				if _, ok := cost[nn]; ok {
 					continue
 				}
 				cost[nn] = math.MaxInt32
-				par[nn] = ""
 			}
 
 		}
-		//fmt.Printf("NODE %s: cost -> %+v\n\n", k, cost)
-		//fmt.Printf("NODE %s: parent -> %+v\n\n", k, par)
+		fmt.Printf("NODE %s: current cost info -> %#v\n\n", k, cost)
 	}
 
 	// implementation ----------------------------------
-	// processed holds already processed nodes
 	processed := map[string]struct{}{}
 
-	// cost holds distance to a node from the start.
 	node := findLowestCostNode(processed, cost)
 	for node != "" {
 		children := g[node]
@@ -56,18 +52,25 @@ func (g Graph) FindShortest() {
 			newWeight := cost[node] + chw
 			if cost[chn] > newWeight {
 				cost[chn] = newWeight
-				par[chn] = node
 			}
 		}
 		processed[node] = struct{}{}
 		node = findLowestCostNode(processed, cost)
 	}
 
-	fmt.Printf("Shortest distance from the Start to each node: %#v\n", cost)
+	// display results
+	nodeNames := []string{}
+	for k, _ := range cost {
+		nodeNames = append(nodeNames, k)
+	}
+	sort.Strings(nodeNames)
+	for _, node := range nodeNames {
+		fmt.Printf("Shortest distance from the Start to each node: %s ... %d\n", node, cost[node])
+	}
 }
 
-// findLowestCostNode finds the node with the shortest path from start
-// it disregards already processed nodes
+// findLowestCostNode finds the node with the shortest path from start from
+// so far collected node distances. Already processed nodes are skipped.
 func findLowestCostNode(processed map[string]struct{}, cost weight) string {
 	min := math.MaxInt32
 	var node string
@@ -79,6 +82,5 @@ func findLowestCostNode(processed map[string]struct{}, cost weight) string {
 			node = k
 		}
 	}
-
 	return node
 }
