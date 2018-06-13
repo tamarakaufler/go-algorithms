@@ -6,6 +6,7 @@ import (
 	"sort"
 	"strconv"
 	"strings"
+	"time"
 )
 
 var (
@@ -38,7 +39,6 @@ func main() {
 
 	// guessing ...
 	guess(num, il)
-
 }
 
 func guess(num int, list []int) {
@@ -48,28 +48,24 @@ func guess(num int, list []int) {
 	iMax = len(list) - 1
 
 	for {
-		if iMin < 0 || iMax > len(list)-1 {
+		if iMin < 0 || iMax > len(list)-1 || iMax < iMin {
 			fmt.Printf("you num %d was not found\n", num)
 			break
 		}
 
-		mid = (iMax - iMin) / 2
+		mid = (iMax-iMin)/2 + iMin
 		g = list[mid]
-		fmt.Printf("START  min=%d, mid=%d,max=%d, guess=%d\n", iMin, mid, iMax, g)
+		fmt.Printf("Guessing  min=%d, mid=%d,max=%d, guess=%d\n", iMin, mid, iMax, g)
 
 		switch {
 		case g == num:
 			fmt.Printf("you num is >> %d <<\n", g)
 			return
 		case num > g:
-			fmt.Printf(">    min=%d, max=%d, guess=%d\n", iMin, iMax, g)
 			iMin = mid + 1
 		default:
-			fmt.Printf("<    min=%d, max=%d, guess=%d\n", iMin, iMax, g)
 			iMax = mid - 1
 		}
-
-		fmt.Printf("after one loop -> min=%d, max=%d\n\n", iMin, iMax)
+		time.Sleep(500 * time.Millisecond)
 	}
-
 }
