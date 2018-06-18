@@ -20,8 +20,8 @@ Data structure representing the problem is a map of lists:
        |       |
     ------   -----------
     |    |   |    |    |
-                                                                                       LEVEL3
- etc
+                                                                                          LEVEL3
+ etc    
 
 
 ## Solution
