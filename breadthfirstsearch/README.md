@@ -27,7 +27,7 @@ Data structure representing the problem is a map of lists:
 ## Solution
 
 The implementation searches each level first and descents into the next one only
-if the solution is not found on the current leve. The problem uses a queue to arrive
+if the solution is not found on the current level. The problem uses a queue to arrive
 at a solution.
 
 User supplies his own criteria function that chooses the first acceptable node. The provided implementation works with string nodes.
