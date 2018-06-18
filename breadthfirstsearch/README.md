@@ -8,18 +8,18 @@ the shortest path to the node that satisfies given criteria.
 
 Data structure representing the problem is a map of lists:
 
-                  node1
-                    |
-        -------------------------------------------
-        |                   |                     |
-      node2               node3                 node4                                  LEVEL1
-        |                   |                     |
-    ----------------        ---------            ---------------------------
-    |       |      |        |       |            |        |        |       |
-  node21  node22 node23   node31  node32       node41   node42   node43  node44        LEVEL2
-    |       |
- ------   -----------
- |    |   |    |    |
+                     node1
+                       |
+           -------------------------------------------
+           |                   |                     |
+         node2               node3                 node4                                  LEVEL1
+           |                   |                     |
+       ----------------        ---------            ---------------------------
+       |       |      |        |       |            |        |        |       |
+     node21  node22 node23   node31  node32       node41   node42   node43  node44        LEVEL2
+       |       |
+    ------   -----------
+    |    |   |    |    |
                                                                                        LEVEL3
  etc
 
